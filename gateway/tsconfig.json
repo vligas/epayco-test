@@ -6,6 +6,8 @@
         "outDir": "./build",
         "suppressImplicitAnyIndexErrors": true,
         "esModuleInterop": true,
-        "strict": true
+        "strict": true,
+        "experimentalDecorators": true,
+        "strictPropertyInitialization": false
     }
 }

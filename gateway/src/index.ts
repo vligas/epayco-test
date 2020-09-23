@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import logger from './config/logger';
 import app from './config/express';
 import { port, env } from './config/env';
