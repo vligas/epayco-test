@@ -26,5 +26,8 @@ coverage
 # Benchmarking
 benchmarks/graphs
 
+# environment
+.env
+
 # build
 dist
