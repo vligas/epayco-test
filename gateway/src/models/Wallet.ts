@@ -9,12 +9,10 @@ export class Wallet {
     @Column({ type: 'float' })
     balance: number;
 
-
     @OneToOne(type => User)
     @JoinColumn()
     user: User;
 
     @CreateDateColumn()
     createdDate: Date;
-
 }

@@ -1,14 +1,15 @@
 import httpStatus from "http-status";
-import { getConnection, getRepository, InsertResult } from "typeorm";
+import { getConnection, getManager, getRepository, InsertResult } from "typeorm";
 import { User } from "../../../../models/User";
 import { Wallet } from "../../../../models/Wallet";
 import APIError from "../../../../utils/APIError";
+import { ServiceOptions } from "../../../../utils/ServiceOptions";
 import { ReqCreateUserDto } from "./user.dto";
 
 
 const getUserRepository = () => getRepository(User)
 
-export const createUser = async (user: ReqCreateUserDto) => {
+export const createUser = async (user: ReqCreateUserDto, options: ServiceOptions = { db: getManager() }) => {
     const repo = getUserRepository();
     if (await repo.findOne({ phoneNumber: user.phoneNumber, document: user.document })) {
         throw new APIError({

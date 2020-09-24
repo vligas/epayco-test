@@ -2,7 +2,7 @@ import { createConnection, Connection, ConnectionOptions } from "typeorm";
 import { User } from "../models/User";
 import { UserTransaction } from "../models/UserTransaction";
 import { Wallet } from "../models/Wallet";
-import { db } from './env'
+import { db, env } from './env'
 
 export const connect = () => createConnection({
     type: "mysql",
@@ -13,4 +13,5 @@ export const connect = () => createConnection({
     database: db.name,
     entities: [User, UserTransaction, Wallet],
     synchronize: true,
+    logging: env === 'production' ? false : 'error'
 } as ConnectionOptions);
