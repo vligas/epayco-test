@@ -9,10 +9,12 @@ import { ServiceOptions } from "../../../../utils/ServiceOptions";
 interface ICreateTransaction {
     origin: string | null | undefined
     reciever: string | null | undefined
+    description: string
     ammount: number
     requiresConfirmation: boolean
 }
 
+export const generateRefNumber = () => Math.floor(Math.random() * (99999999 - 10000000) + 10000000)
 
 export const createTransaction = async ({ requiresConfirmation, ...transaction }: ICreateTransaction, { db }: ServiceOptions = { db: getManager() }) => {
     const transactionRepo = db.getRepository(UserTransaction)
@@ -24,6 +26,7 @@ export const createTransaction = async ({ requiresConfirmation, ...transaction }
         register = transactionRepo.create({ ...transaction, status: 'approved' })
     }
 
+    register.refNumber = generateRefNumber()
     const insertedRegister = await transactionRepo.insert(register)
     return transactionRepo.merge(register, insertedRegister.generatedMaps[0])
 }

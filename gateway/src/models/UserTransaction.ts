@@ -19,6 +19,12 @@ export class UserTransaction {
     @Column()
     status: string;
 
+    @Column()
+    description: string;
+
+    @Column()
+    refNumber: number;
+
     @Column({ nullable: true })
     confirmationCode?: string;
 
