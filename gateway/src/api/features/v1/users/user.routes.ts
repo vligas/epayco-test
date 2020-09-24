@@ -1,9 +1,11 @@
 import express, { Request, Response } from 'express';
 import validate from 'express-validation';
+import httpStatus from 'http-status';
 import { validateBody } from '../../../../middlewares/validation';
+import APIError from '../../../../utils/APIError';
 import { wrap } from '../../../../utils/asyncWrap';
-import { ReqCreateUserDto, ReqPurchaseDto, ReqVerifyPurchaseDto } from './user.dto';
-import { createUser, makePurchase, verifyPurchase } from './user.service';
+import { ReqCreateUserDto, ReqPurchaseDto, ReqUserInfoDto, ReqVerifyPurchaseDto } from './user.dto';
+import { createUser, findUser, makePurchase, verifyPurchase } from './user.service';
 
 const router = express.Router();
 
@@ -16,6 +18,18 @@ router.post(
         res.json({ data: user, message: 'User created' })
     })
 );
+
+router.post('/info', validateBody(ReqUserInfoDto), wrap(async (req: Request, res: Response) => {
+    const user = await findUser(req.body)
+    if (!user) {
+        throw new APIError({
+            status: httpStatus.BAD_REQUEST,
+            message: 'Invalid credentials'
+        })
+    }
+    res.status(200)
+    res.json({ data: user, message: 'User info retrieved' })
+}))
 
 router.post(
     '/make-purchase',

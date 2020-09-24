@@ -29,13 +29,12 @@ export default function RegisterPage(props) {
       history.push('/login');
     },
   });
-  const onSubmit = runRegisterUser;
 
   return (
     <LoginPageContainer>
       <motion.div>
         <CardPage title="Register TechTest">
-          <form onSubmit={handleSubmit(onSubmit)} disabled={isPending}>
+          <form onSubmit={handleSubmit(runRegisterUser)} disabled={isPending}>
             <TextInput
               name="phoneNumber"
               label="Phone Number"
@@ -91,20 +90,4 @@ const LoginPageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  font-weight: lighter;
-  color: ${(props) => props.theme.color.primary};
-`;
-
-const RegisterText = styled.p`
-  font-size: 0.8em;
-  margin-top: 20px;
-`;
-
-const LoginCard = styled(Paper)`
-  width: 250px;
-  padding: 25px 20px;
 `;

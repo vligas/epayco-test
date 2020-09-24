@@ -18,9 +18,21 @@ export class ReqCreateUserDto {
     phoneNumber: string;
 
     @IsDefined()
-    @Matches(RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/))
+    @Matches(RegExp(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/), { message: 'Invalid email' })
     email: string;
 
+}
+
+export class ReqUserInfoDto {
+    @IsDefined()
+    @IsString()
+    @Length(1, 50)
+    phoneNumber: string;
+
+    @IsDefined()
+    @IsString()
+    @Length(1, 50)
+    document: string;
 }
 
 export class ReqPurchaseDto {
