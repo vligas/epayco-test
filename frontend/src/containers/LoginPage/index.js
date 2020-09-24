@@ -6,7 +6,7 @@ export default function LoginPage(props) {
   return (
     <LoginPageContainer>
       <div>
-        <h1>Prueba</h1>
+        <Title>Prueba</Title>
         <LoginCard>Prueba</LoginCard>
       </div>
     </LoginPageContainer>
@@ -24,6 +24,10 @@ const LoginPageContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const Title = styled.h1`
+  text-align: center;
 `;
 
 const LoginCard = styled(Paper)`
