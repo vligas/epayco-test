@@ -20,8 +20,7 @@ export class User {
     phoneNumber: string;
 
     @OneToOne(type => Wallet, wallet => wallet.user)
-    photo: Wallet;
-
+    wallet: Wallet;
 
     @CreateDateColumn()
     createdDate: Date;

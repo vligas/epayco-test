@@ -1,16 +1,17 @@
+import { ValidationError } from 'class-validator';
 // eslint-disable-next-line max-classes-per-file
 import httpStatus, { HttpStatus } from 'http-status';
 
 export interface ExtendableErrorOptions {
   message: string
-  errors: string[]
+  errors: ValidationError[]
   status: number
   isPublic: boolean
   stack?: string
 }
 
 class ExtendableError extends Error {
-  errors: string[]
+  errors: ValidationError[]
   status: number
   isPublic: boolean
   stack?: string
@@ -24,26 +25,19 @@ class ExtendableError extends Error {
     this.status = status;
     this.isPublic = isPublic;
     this.stack = stack;
-    // Error.captureStackTrace(this, this.constructor.name);
   }
 }
 
 
 export interface APIErrorOptions {
   message: string
-  errors?: string[]
+  errors?: ValidationError[]
   status?: number
   isPublic?: boolean
   stack?: string
 }
 
 class APIError extends ExtendableError {
-  /**
-   * Creates an API error.
-   * @param {string} message - Error message.
-   * @param {number} status - HTTP status code of error.
-   * @param {boolean} isPublic - Whether the message should be visible to user or not.
-   */
   constructor({
     message,
     errors = [],

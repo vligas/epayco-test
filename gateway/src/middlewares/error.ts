@@ -1,15 +1,16 @@
 import httpStatus from 'http-status';
-import expressValidation, { ValidationError } from 'express-validation';
+import expressValidation from 'express-validation';
 import APIError from '../utils/APIError';
 import { env } from '../config/env';
 import logger from '../config/logger';
 import { NextFunction, Request, Response } from 'express';
+import { ValidationError } from 'class-validator';
 
 
 interface ErrorResponse {
   code: number,
   message: string,
-  errors: string[],
+  errors: ValidationError[],
   stack?: string,
 }
 
@@ -38,20 +39,13 @@ export const handler = (err: APIError, req: Request, res: Response) => {
  * If error is not an instanceOf APIError, convert it.
  * @public
  */
-export const converter = async (err: Error | expressValidation.ValidationError | APIError, req: Request, res: Response, next: NextFunction) => {
+export const converter = async (err: Error | APIError, req: Request, res: Response, next: NextFunction) => {
   if (!err) {
     return next()
   }
 
   let convertedError = err;
-  logger.info('Entre converter')
-  if (err instanceof expressValidation.ValidationError) {
-    convertedError = new APIError({
-      message: 'Validation Error',
-      status: 400,
-      errors: [err.error],
-    });
-  } else if (
+  if (
     err.message.includes('ENOTFOUND') ||
     err.message.includes('Failed to connect') ||
     err.message.includes('Failed to cancel request')

@@ -9,14 +9,6 @@ export class Wallet {
     @Column({ type: 'float' })
     balance: number;
 
-    @Column()
-    name: string;
-
-    @Column()
-    email: string;
-
-    @Column()
-    phoneNumber: string;
 
     @OneToOne(type => User)
     @JoinColumn()

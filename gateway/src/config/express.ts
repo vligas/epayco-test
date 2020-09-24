@@ -10,6 +10,7 @@ import { logs } from './env';
 import { converter, handler, notFound } from '../middlewares/error';
 import logger from './logger';
 import { wrap } from '../utils/asyncWrap';
+import routes from '../api/features/v1';
 
 /**
  * Express instance
@@ -41,14 +42,9 @@ app.use(helmet());
 app.use(cors());
 app.use('*', cors());
 
-
-app.get('/', wrap(async (req, res) => {
-    logger.info('Entre')
-    res.json({ message: 'entre' })
-}))
 // format reponse to have this shape: { data: ... }
 // app.use(format)
-
+app.use('/v1', routes)
 
 // if error is not an instanceOf APIError, convert it.
 app.use(converter);
