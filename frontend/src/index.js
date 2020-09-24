@@ -7,12 +7,20 @@ import Routes from './Routes';
 import * as serviceWorker from './serviceWorker';
 import history from './utils/history';
 import 'normalize.css';
+import GlobalStyles, { theme } from './theme';
+import { ThemeProvider } from 'styled-components';
+import { StylesProvider } from '@material-ui/core';
 
 ReactDOM.render(
   <React.StrictMode>
+    <GlobalStyles />
     <Provider store={store}>
       <ConnectedRouter history={history}>
-        <Routes />
+        <StylesProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <Routes />
+          </ThemeProvider>
+        </StylesProvider>
       </ConnectedRouter>
     </Provider>
   </React.StrictMode>,

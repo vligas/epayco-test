@@ -1,13 +1,21 @@
+import { AnimatePresence } from 'framer-motion';
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import AnimatedRoute from './components/AnimatedRoute';
 import LoginPage from './containers/LoginPage';
+import RegisterPage from './containers/RegisterPage';
 
 function App() {
   return (
     <Switch>
-      <Route path="/">
-        <LoginPage />
-      </Route>
+      <AnimatePresence exitBeforeEnter>
+        <AnimatedRoute path="/login" component={LoginPage}></AnimatedRoute>
+        <AnimatedRoute
+          path="/register"
+          component={RegisterPage}
+        ></AnimatedRoute>
+        <Redirect to="/login"></Redirect>
+      </AnimatePresence>
     </Switch>
   );
 }
