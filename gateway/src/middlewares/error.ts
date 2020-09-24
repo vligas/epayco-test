@@ -40,7 +40,8 @@ export const handler = (err: APIError, req: Request, res: Response) => {
  * @public
  */
 export const converter = async (err: Error | APIError, req: Request, res: Response, next: NextFunction) => {
-  if (!err) {
+  logger.info(err)
+  if (err !== null && !err) {
     return next()
   }
 

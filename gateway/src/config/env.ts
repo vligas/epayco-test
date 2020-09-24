@@ -12,6 +12,7 @@ export const {
     port,
     db,
     logs,
+    sessionSecretKey
 } = {
     env: process.env.NODE_ENV,
     port: process.env.APP_PORT,
@@ -22,5 +23,6 @@ export const {
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
     },
+    sessionSecretKey: process.env.SESSION_SECRET_KEY,
     logs: process.env.NODE_ENV === 'production' ? 'combined' : 'dev',
 };

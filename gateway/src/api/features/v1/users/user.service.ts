@@ -1,27 +1,71 @@
 import httpStatus from "http-status";
-import { getConnection, getManager, getRepository, InsertResult } from "typeorm";
+import { getConnection, getManager, getRepository, InsertResult, Transaction } from "typeorm";
 import { User } from "../../../../models/User";
 import { Wallet } from "../../../../models/Wallet";
 import APIError from "../../../../utils/APIError";
+import { decrypt, encrypt } from "../../../../utils/encryption";
 import { ServiceOptions } from "../../../../utils/ServiceOptions";
-import { ReqCreateUserDto } from "./user.dto";
+import { createDbTransaction } from "../../../../utils/transactionHelpers";
+import { confirmTransaction, createTransaction } from "../transactions/transaction.service";
+import { ReqCreateUserDto, ReqPurchaseDto, ReqVerifyPurchaseDto } from "./user.dto";
 
 
-const getUserRepository = () => getRepository(User)
+interface IFindUserWhere {
+    document: string
+    phoneNumber: string
+}
 
-export const createUser = async (user: ReqCreateUserDto, options: ServiceOptions = { db: getManager() }) => {
-    const repo = getUserRepository();
-    if (await repo.findOne({ phoneNumber: user.phoneNumber, document: user.document })) {
+export const findUser = ({ document, phoneNumber }: IFindUserWhere, { db }: ServiceOptions = { db: getManager() }) => {
+    const repo = db.getRepository(User)
+    return repo.findOne({ relations: ['wallet'], where: { document, phoneNumber } })
+}
+
+
+export const createUser = async (user: ReqCreateUserDto, { db }: ServiceOptions = { db: getManager() }) => {
+    const repo = db.getRepository(User);
+    if (await findUser({ document: user.document, phoneNumber: user.phoneNumber }, { db })) {
         throw new APIError({
             status: httpStatus.BAD_REQUEST,
             message: 'A user with that document and phone-number already exists.'
         })
     }
-    let savedUser = await getConnection().transaction(async tx => {
+
+    let savedUser = await createDbTransaction(db, async tx => {
         const insertedUser = await tx.getRepository(User).insert(user);
         await tx.getRepository(Wallet).insert({ balance: 0, user: insertedUser.identifiers[0] });
         return insertedUser
     }) as InsertResult;
 
     return repo.merge(repo.create(user), savedUser.generatedMaps[0])
+}
+
+
+export const makePurchase = async (purchase: ReqPurchaseDto, { db }: ServiceOptions = { db: getManager() }) => {
+    const user = await findUser({ phoneNumber: purchase.phoneNumber, document: purchase.document }, { db })
+    console.log(user)
+    if (!user) {
+        throw new APIError({
+            status: httpStatus.BAD_REQUEST,
+            message: 'Invalid combination of phone-number and document'
+        })
+    }
+
+    const transaction = await createTransaction({ originId: user.wallet.id, requiresConfirmation: true, ammount: purchase.ammount, description: 'purchase', recieverId: null })
+    return await encrypt({ confirmationCode: '123456', transactionId: transaction.id })
+}
+
+export const verifyPurchase = async (verification: ReqVerifyPurchaseDto, { db }: ServiceOptions = { db: getManager() }) => {
+    let payload
+    try {
+        payload = await decrypt(verification.sessionToken)
+    }
+    catch (e) {
+        throw new APIError({
+            status: httpStatus.BAD_REQUEST,
+            message: 'Invalid session token'
+        })
+    }
+    if (payload.confirmationCode === verification.confirmationCode) {
+        await confirmTransaction(payload.transactionId, { db })
+    }
 }

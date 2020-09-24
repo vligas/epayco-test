@@ -33,7 +33,7 @@ export const rechargeWallet = async (recharge: ReqRechargeWalletDto, { db }: Ser
 
     const userTransaction = createDbTransaction(db, async (manager) => {
         await manager.getRepository(Wallet).increment({ id: user.wallet.id }, 'balance', recharge.ammount)
-        return await createTransaction({ reciever: user.wallet.id, origin: null, description: 'recharge', ammount: recharge.ammount, requiresConfirmation: false }, { db: manager })
+        return await createTransaction({ recieverId: user.wallet.id, originId: null, description: 'recharge', ammount: recharge.ammount, requiresConfirmation: false }, { db: manager })
     })
 
     return userTransaction

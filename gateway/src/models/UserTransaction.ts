@@ -10,11 +10,19 @@ export class UserTransaction {
     @Column({ type: 'float' })
     ammount: number;
 
-    @ManyToOne(type => Wallet, { nullable: true })
-    origin?: string | null;
+    @Column({ type: "uuid", nullable: true })
+    originId: string | null;
+
+
+    @ManyToOne(type => Wallet, wallet => wallet.transactionsMade)
+    origin?: Wallet | null;
+
+    @Column({ type: "uuid", nullable: true })
+    recieverId: string | null;
+
 
     @ManyToOne(type => Wallet, { nullable: true })
-    reciever?: string | null;
+    reciever?: Wallet | null;
 
     @Column()
     status: string;
@@ -24,9 +32,6 @@ export class UserTransaction {
 
     @Column()
     refNumber: number;
-
-    @Column({ nullable: true })
-    confirmationCode?: string;
 
     @CreateDateColumn()
     createdDate: Date;
