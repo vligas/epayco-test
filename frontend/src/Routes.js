@@ -30,8 +30,8 @@ function UnauthRoutes() {
           component={RegisterPage}
           key="register"
         ></AnimatedRoute>
+        <Redirect to="/login"></Redirect>
       </AnimatePresence>
-      <Redirect to="/login"></Redirect>
     </Switch>
   );
 }
@@ -63,8 +63,8 @@ function AuthRoutes() {
             key="pay"
             component={PayPage}
           ></AnimatedRoute>
+          <Redirect to="/dashboard"></Redirect>
         </AnimatePresence>
-        <Redirect to="/dashboard"></Redirect>
       </Switch>
     </Layout>
   );

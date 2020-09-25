@@ -1,6 +1,7 @@
 import httpStatus from "http-status";
-import { getConnection, getManager, getRepository, InsertResult } from "typeorm";
+import { getConnection, getManager, getRepository, InsertResult, Transaction } from "typeorm";
 import { User } from "../../../../models/User";
+import { UserTransaction } from "../../../../models/UserTransaction";
 import { Wallet } from "../../../../models/Wallet";
 import APIError from "../../../../utils/APIError";
 import { ServiceOptions } from "../../../../utils/ServiceOptions";
@@ -9,8 +10,6 @@ import { createTransaction } from "../transactions/transaction.service";
 import { ReqRechargeWalletDto } from "./wallet.dto";
 
 
-const getWalletRepository = () => getRepository(Wallet)
-const getUserRepository = () => getRepository(User)
 
 export const rechargeWallet = async (recharge: ReqRechargeWalletDto, { db }: ServiceOptions = { db: getManager() }) => {
     const userRepo = db.getRepository(User);
@@ -37,4 +36,11 @@ export const rechargeWallet = async (recharge: ReqRechargeWalletDto, { db }: Ser
     })
 
     return userTransaction
+}
+
+interface IGetLatestTransactionsOptions {
+    walletId: string
+}
+export const getLatestTransactions = async ({ walletId }: IGetLatestTransactionsOptions, { db }: ServiceOptions = { db: getManager() }) => {
+    return db.getRepository(UserTransaction).createQueryBuilder().where("status = 'approved' AND (originId = :wallet OR recieverId = :wallet)").setParameter('wallet', walletId).limit(10).orderBy('createdDate', 'DESC').getMany()
 }

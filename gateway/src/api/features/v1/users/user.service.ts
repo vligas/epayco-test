@@ -4,6 +4,7 @@ import { User } from "../../../../models/User";
 import { Wallet } from "../../../../models/Wallet";
 import APIError from "../../../../utils/APIError";
 import { decrypt, encrypt } from "../../../../utils/encryption";
+import { sendMail } from "../../../../utils/sendMail";
 import { ServiceOptions } from "../../../../utils/ServiceOptions";
 import { createDbTransaction } from "../../../../utils/transactionHelpers";
 import { confirmTransaction, createTransaction } from "../transactions/transaction.service";
@@ -14,6 +15,9 @@ interface IFindUserWhere {
     document: string
     phoneNumber: string
 }
+
+export const generateConfirmationCode = () => Math.floor(Math.random() * (999999 - 100000) + 100000)
+
 
 export const findUser = ({ document, phoneNumber }: IFindUserWhere, { db }: ServiceOptions = { db: getManager() }) => {
     const repo = db.getRepository(User)
@@ -40,6 +44,7 @@ export const createUser = async (user: ReqCreateUserDto, { db }: ServiceOptions 
 }
 
 
+
 export const makePurchase = async (purchase: ReqPurchaseDto, { db }: ServiceOptions = { db: getManager() }) => {
     const user = await findUser({ phoneNumber: purchase.phoneNumber, document: purchase.document }, { db })
     console.log(user)
@@ -51,7 +56,9 @@ export const makePurchase = async (purchase: ReqPurchaseDto, { db }: ServiceOpti
     }
 
     const transaction = await createTransaction({ originId: user.wallet.id, requiresConfirmation: true, ammount: purchase.ammount, description: 'purchase', recieverId: null })
-    return await encrypt({ confirmationCode: '123456', transactionId: transaction.id })
+    const confirmationCode = generateConfirmationCode().toString()
+    await sendMail(`"${user.name}" <${user.email}>`, 'New transaction', `this is your confirmation code: ${confirmationCode}`)
+    return await encrypt({ confirmationCode, transactionId: transaction.id })
 }
 
 export const verifyPurchase = async (verification: ReqVerifyPurchaseDto, { db }: ServiceOptions = { db: getManager() }) => {
@@ -67,5 +74,11 @@ export const verifyPurchase = async (verification: ReqVerifyPurchaseDto, { db }:
     }
     if (payload.confirmationCode === verification.confirmationCode) {
         await confirmTransaction(payload.transactionId, { db })
+    }
+    else {
+        throw new APIError({
+            status: httpStatus.BAD_REQUEST,
+            message: 'Invalid pin'
+        })
     }
 }

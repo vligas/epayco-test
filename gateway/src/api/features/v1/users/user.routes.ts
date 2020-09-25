@@ -4,6 +4,7 @@ import httpStatus from 'http-status';
 import { validateBody } from '../../../../middlewares/validation';
 import APIError from '../../../../utils/APIError';
 import { wrap } from '../../../../utils/asyncWrap';
+import { getLatestTransactions } from '../wallet/wallet.service';
 import { ReqCreateUserDto, ReqPurchaseDto, ReqUserInfoDto, ReqVerifyPurchaseDto } from './user.dto';
 import { createUser, findUser, makePurchase, verifyPurchase } from './user.service';
 
@@ -28,7 +29,7 @@ router.post('/info', validateBody(ReqUserInfoDto), wrap(async (req: Request, res
         })
     }
     res.status(200)
-    res.json({ data: user, message: 'User info retrieved' })
+    res.json({ data: { ...user, transactions: await getLatestTransactions({ walletId: user.wallet.id }) }, message: 'User info retrieved' })
 }))
 
 router.post(

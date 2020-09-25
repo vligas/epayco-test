@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import TextInput from '../../components/TextInput';
 import { Button } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { CardPage, FooterText } from '../../components/CardPage';
 import { useAsync } from 'react-async';
 import { config } from '../../config';
@@ -19,12 +19,14 @@ function getUserInfo([data]) {
 
 export default function LoginPage(props) {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { register, handleSubmit, errors, setError } = useForm();
   const { isPending, run: runGetUserInfo } = useAsync({
     deferFn: getUserInfo,
     onReject: (err) => handleApiErrors(err, setError),
     onResolve: ({ data }) => {
       dispatch(setUser(data.data));
+      history.push('/dashboard');
     },
   });
 
