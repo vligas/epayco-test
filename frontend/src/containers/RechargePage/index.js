@@ -1,15 +1,42 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
+import { useAsync } from 'react-async';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import TextInput from '../../components/TextInput';
+import axios from 'axios';
+import { config } from '../../config';
+import { handleApiErrors } from '../../utils/handleApiErrors';
+import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { refreshUserInfo } from '../../redux/reducers/session';
+
+function rechargeWallet([data]) {
+  console.log(data);
+  return axios.post(`${config.apiUrl}/wallets/recharge`, {
+    ...data,
+    ammount: parseFloat(data.ammount),
+  });
+}
 
 export default function RechargePage() {
   const { register, handleSubmit, errors, setError } = useForm();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const { isPending, run: runRecharge } = useAsync({
+    deferFn: rechargeWallet,
+    onReject: (err) => handleApiErrors(err, setError),
+    onResolve: () => {
+      dispatch(refreshUserInfo());
+      toast.success('Recarga realizada');
+      history.push('/dashboard');
+    },
+  });
 
   return (
     <Container>
-      <RechargeForm>
+      <RechargeForm disabled={isPending} onSubmit={handleSubmit(runRecharge)}>
         <TextInput
           name="phoneNumber"
           label="Numero de telefono"
@@ -37,6 +64,7 @@ export default function RechargePage() {
           disableElevation
           color="primary"
           type="submit"
+          disabled={isPending}
         >
           Recargar
         </Button>

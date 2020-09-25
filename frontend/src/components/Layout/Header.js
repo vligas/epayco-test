@@ -1,11 +1,19 @@
 import { Button, Chip, Paper } from '@material-ui/core';
 import React from 'react';
-import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
+import { unsetUser } from '../../redux/reducers/session';
 
 export function Header() {
   const user = useSelector((state) => state.session.user);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  function logout() {
+    dispatch(unsetUser());
+    history.push('/login');
+  }
+
   return (
     <Container>
       <div>
@@ -23,7 +31,9 @@ export function Header() {
           <HeaderLink to="pay">Pagar</HeaderLink>
         </HeaderItem>
         <HeaderItem>
-          <Button color="secondary">Salir</Button>
+          <Button color="secondary" onClick={logout}>
+            Salir
+          </Button>
         </HeaderItem>
       </div>
     </Container>

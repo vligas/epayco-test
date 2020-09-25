@@ -4,6 +4,8 @@
  */
 import produce from 'immer';
 import { storage } from '../../utils/storage';
+import axios from 'axios';
+import { config } from '../../config';
 
 const scope = '[Session]';
 
@@ -31,6 +33,24 @@ const sessionReducer = (state = defaultState, action) =>
     }
   });
 
+export function refreshUserInfo() {
+  return (dispatch, getState) => {
+    const { phoneNumber, document } = getState().session.user;
+
+    axios
+      .post(`${config.apiUrl}/users/info`, {
+        phoneNumber,
+        document,
+      })
+      .then((res) => {
+        dispatch(setUser(res.data.data));
+      })
+      .catch((err) => {
+        dispatch(unsetUser());
+      });
+  };
+}
+
 export const setUser = (user) => {
   storage.set('user', user);
   return {
@@ -40,6 +60,7 @@ export const setUser = (user) => {
 };
 
 export const unsetUser = () => {
+  storage.remove('user');
   return {
     type: UNSET_USER,
   };
