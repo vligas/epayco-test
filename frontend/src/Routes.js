@@ -1,7 +1,7 @@
 import { AnimatePresence } from 'framer-motion';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { Redirect, Switch } from 'react-router-dom';
 import AnimatedRoute from './components/AnimatedRoute';
 import Layout from './components/Layout';
 import Dashboard from './containers/Dashboard';

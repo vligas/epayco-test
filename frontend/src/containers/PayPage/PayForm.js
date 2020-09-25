@@ -2,20 +2,15 @@ import { Button } from '@material-ui/core';
 import React from 'react';
 import { useAsync } from 'react-async';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import TextInput from '../../components/TextInput';
 import axios from 'axios';
 import { config } from '../../config';
 import { handleApiErrors } from '../../utils/handleApiErrors';
-import { toast } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
-import { refreshUserInfo } from '../../redux/reducers/session';
+import { useSelector } from 'react-redux';
 
 export default function PayForm({ onPaymentMade: handlePaymentMade }) {
   const { register, handleSubmit, errors, setError } = useForm();
-  const dispatch = useDispatch();
-  const history = useHistory();
   const user = useSelector((state) => state.session.user);
 
   function makePayment([data]) {

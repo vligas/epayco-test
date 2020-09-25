@@ -1,6 +1,5 @@
 import { Step, StepLabel, Stepper } from '@material-ui/core';
 import React, { useState } from 'react';
-import styled from 'styled-components';
 import PayConfirmation from './PayConfirmation';
 import PayForm from './PayForm';
 

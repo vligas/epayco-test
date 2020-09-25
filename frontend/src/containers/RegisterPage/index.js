@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import Paper from '@material-ui/core/Paper';
 import { motion } from 'framer-motion';
 import TextInput from '../../components/TextInput';
 import { Button } from '@material-ui/core';
