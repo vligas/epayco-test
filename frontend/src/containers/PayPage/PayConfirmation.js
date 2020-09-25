@@ -17,7 +17,7 @@ export default function PayConfirmation({ token }) {
   const history = useHistory();
 
   function confirmPayment([data]) {
-    return axios.post(`${config.apiUrl}/users/verify-purchase`, {
+    return axios.put(`${config.apiUrl}/users/verify-purchase`, {
       confirmationCode: pin,
       sessionToken: token,
     });

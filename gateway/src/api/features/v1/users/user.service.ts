@@ -23,5 +23,5 @@ export const makePurchase = async (purchase: ReqPurchaseDto) => {
 }
 
 export const verifyPurchase = async (verification: ReqVerifyPurchaseDto) => {
-    return callService('users/verify-purchase', 'post', verification)
+    return callService('users/verify-purchase', 'put', verification)
 }

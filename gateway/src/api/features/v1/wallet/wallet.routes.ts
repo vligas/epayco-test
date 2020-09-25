@@ -7,7 +7,7 @@ import { rechargeWallet } from './wallet.service';
 
 const router = express.Router();
 
-router.post(
+router.put(
     '/recharge',
     validateBody(ReqRechargeWalletDto),
     wrap(async (req: Request, res: Response) => {

@@ -39,7 +39,7 @@ router.post(
     })
 )
 
-router.post(
+router.put(
     '/verify-purchase',
     validateBody(ReqVerifyPurchaseDto),
     wrap(async (req: Request, res: Response) => {
