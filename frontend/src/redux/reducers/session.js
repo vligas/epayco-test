@@ -12,7 +12,6 @@ const scope = '[Session]';
 export const SET_USER = `${scope} SET USER`;
 export const UNSET_USER = `${scope} UNSET USER`;
 
-console.log(storage.get('user'));
 const defaultState = {
   user: storage.get('user'),
 };

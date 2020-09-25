@@ -14,7 +14,6 @@ import { handleApiErrors } from '../../utils/handleApiErrors';
 import { toast } from 'react-toastify';
 
 function registerUser([data]) {
-  console.log(data);
   return axios.post(`${config.apiUrl}/users`, data);
 }
 

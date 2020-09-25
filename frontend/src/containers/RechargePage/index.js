@@ -13,7 +13,6 @@ import { useDispatch } from 'react-redux';
 import { refreshUserInfo } from '../../redux/reducers/session';
 
 function rechargeWallet([data]) {
-  console.log(data);
   return axios.post(`${config.apiUrl}/wallets/recharge`, {
     ...data,
     ammount: parseFloat(data.ammount),

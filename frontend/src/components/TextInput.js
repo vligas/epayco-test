@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 export default function ({ errors = [], ...props }) {
   const error = errors[props.name];
-  console.log(error);
   return (
     <TextInput
       {...props}

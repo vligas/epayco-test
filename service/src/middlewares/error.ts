@@ -1,9 +1,9 @@
 import httpStatus from 'http-status';
+import expressValidation from 'express-validation';
 import APIError from '../utils/APIError';
 import { env } from '../config/env';
 import logger from '../config/logger';
 import { NextFunction, Request, Response } from 'express';
-import { AxiosError } from 'axios'
 import { ValidationError } from 'class-validator';
 
 
@@ -39,7 +39,7 @@ export const handler = (err: APIError, req: Request, res: Response) => {
  * If error is not an instanceOf APIError, convert it.
  * @public
  */
-export const converter = async (err: Error | APIError | AxiosError, req: Request, res: Response, next: NextFunction) => {
+export const converter = async (err: Error | APIError, req: Request, res: Response, next: NextFunction) => {
   logger.info(err)
   if (err !== null && !err) {
     return next()
@@ -49,21 +49,14 @@ export const converter = async (err: Error | APIError | AxiosError, req: Request
   if (
     err.message.includes('ENOTFOUND') ||
     err.message.includes('Failed to connect') ||
-    err.message.includes('Failed to cancel request') ||
-    err.message.includes('ECONNREFUSED')
+    err.message.includes('Failed to cancel request')
   ) {
     convertedError = new APIError({
       message: 'Connection Error',
       status: httpStatus.SERVICE_UNAVAILABLE,
       stack: err.stack
     });
-  }
-  else if ((err as AxiosError).response) {
-    res.status((err as AxiosError)?.response?.status as number)
-    res.send((err as AxiosError).response?.data)
-    return
-  }
-  else if (!(err instanceof APIError)) {
+  } else if (!(err instanceof APIError)) {
     convertedError = new APIError({
       message: err.message,
       stack: err.stack,

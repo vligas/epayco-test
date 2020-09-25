@@ -29,7 +29,6 @@ export const createTransaction = async ({ requiresConfirmation, ...transaction }
 
     register.refNumber = generateRefNumber()
 
-    console.log(register)
     const insertedRegister = await transactionRepo.insert(register)
     return transactionRepo.merge(register, insertedRegister.generatedMaps[0])
 }
@@ -37,7 +36,6 @@ export const createTransaction = async ({ requiresConfirmation, ...transaction }
 export const confirmTransaction = async (transactionId: string, { db }: ServiceOptions = { db: getManager() }) => {
     await createDbTransaction(db, async tx => {
         const transaction = await tx.getRepository(UserTransaction).findOne({ relations: ['origin'], where: { id: transactionId } })
-        console.log(transaction)
         if (!transaction) {
             throw new APIError({
                 status: httpStatus.BAD_REQUEST,

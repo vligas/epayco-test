@@ -23,7 +23,6 @@ export default function PayPage() {
             onPaymentMade={(token) => {
               setActiveStep(1);
               setToken(token);
-              console.log(token);
             }}
           />
         )}
