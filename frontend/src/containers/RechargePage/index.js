@@ -28,7 +28,7 @@ export default function RechargePage() {
     onReject: (err) => handleApiErrors(err, setError),
     onResolve: () => {
       dispatch(refreshUserInfo());
-      toast.success('Recarga realizada');
+      toast.success('Recharge made');
       history.push('/dashboard');
     },
   });
@@ -38,21 +38,21 @@ export default function RechargePage() {
       <RechargeForm disabled={isPending} onSubmit={handleSubmit(runRecharge)}>
         <TextInput
           name="phoneNumber"
-          label="Numero de telefono"
+          label="Phone Number"
           variant="outlined"
           inputRef={register}
           errors={errors}
         />
         <TextInput
           name="document"
-          label="Documento"
+          label="Document"
           variant="outlined"
           inputRef={register}
           errors={errors}
         />
         <TextInput
           name="ammount"
-          label="Cantidad"
+          label="Ammount"
           variant="outlined"
           inputRef={register}
           errors={errors}
@@ -65,7 +65,7 @@ export default function RechargePage() {
           type="submit"
           disabled={isPending}
         >
-          Recargar
+          Recharge
         </Button>
       </RechargeForm>
     </Container>

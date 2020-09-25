@@ -17,22 +17,21 @@ export function Header() {
   return (
     <Container>
       <div>
-        Saldo disponible:{' '}
-        <Chip label={`$${user.wallet.balance}`} color="primary" />
+        Balance: <Chip label={`$${user.wallet.balance}`} color="primary" />
       </div>
       <div>
         <HeaderItem>
-          <HeaderLink to="dashboard">Inicio</HeaderLink>
+          <HeaderLink to="dashboard">Home</HeaderLink>
         </HeaderItem>
         <HeaderItem>
-          <HeaderLink to="recharge">Recargar</HeaderLink>
+          <HeaderLink to="recharge">Recharge</HeaderLink>
         </HeaderItem>
         <HeaderItem>
-          <HeaderLink to="pay">Pagar</HeaderLink>
+          <HeaderLink to="pay">Pay</HeaderLink>
         </HeaderItem>
         <HeaderItem>
           <Button color="secondary" onClick={logout}>
-            Salir
+            Exit
           </Button>
         </HeaderItem>
       </div>

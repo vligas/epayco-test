@@ -10,10 +10,10 @@ export default function PayPage() {
     <div>
       <Stepper activeStep={activeStep}>
         <Step>
-          <StepLabel>Realizar Pago</StepLabel>
+          <StepLabel>Make Payment</StepLabel>
         </Step>
         <Step>
-          <StepLabel>Confirmar Pago</StepLabel>
+          <StepLabel>Verify Payment</StepLabel>
         </Step>
       </Stepper>
       <div>

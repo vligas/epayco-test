@@ -28,7 +28,7 @@ export default function PayConfirmation({ token }) {
     onReject: (err) => handleApiErrors(err, () => {}),
     onResolve: ({ data }) => {
       dispatch(refreshUserInfo());
-      toast.success('Pago confirmado');
+      toast.success('Payment confirmed');
       history.push('/dashboard');
     },
   });
@@ -46,9 +46,7 @@ export default function PayConfirmation({ token }) {
         style={{ padding: '10px' }}
         autoSelect={true}
       />
-      <small>
-        Se ha enviado un correo electronico con el codigo de confirmacion
-      </small>
+      <small>An email has been sent to you with the pin</small>
 
       <OptionsButtons>
         <Button
@@ -56,7 +54,7 @@ export default function PayConfirmation({ token }) {
           disabled={isPending}
           onClick={() => history.push('/dashboard')}
         >
-          Cancelar
+          Cancel
         </Button>
         <Button
           color="primary"
@@ -65,7 +63,7 @@ export default function PayConfirmation({ token }) {
             runConfirmPayment();
           }}
         >
-          Confirmar
+          Confirm
         </Button>
       </OptionsButtons>
     </Container>
