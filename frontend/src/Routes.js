@@ -1,13 +1,15 @@
 import { AnimatePresence } from 'framer-motion';
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import AnimatedRoute from './components/AnimatedRoute';
 import Layout from './components/Layout';
 import Dashboard from './containers/Dashboard';
 import LoginPage from './containers/LoginPage';
+import PayPage from './containers/PayPage';
 import RechargePage from './containers/RechargePage';
 import RegisterPage from './containers/RegisterPage';
+import { refreshUserInfo } from './redux/reducers/session';
 
 function Routes() {
   const user = useSelector((state) => state.session.user);
@@ -35,6 +37,10 @@ function UnauthRoutes() {
 }
 
 function AuthRoutes() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(refreshUserInfo());
+  }, [dispatch]);
   return (
     <Layout>
       <Switch>
@@ -48,8 +54,14 @@ function AuthRoutes() {
           <AnimatedRoute
             path="/recharge"
             exact
-            key="dashboard"
+            key="recharge"
             component={RechargePage}
+          ></AnimatedRoute>
+          <AnimatedRoute
+            path="/pay"
+            exact
+            key="pay"
+            component={PayPage}
           ></AnimatedRoute>
         </AnimatePresence>
         <Redirect to="/dashboard"></Redirect>
