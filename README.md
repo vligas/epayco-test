@@ -1,5 +1,5 @@
 # Epayco Test
-Prueba tecnica de epayco WIP 🚧
+Prueba tecnica de epayco WIP 🚧 [![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/eda580736acb6c4531e5)
 
 ## Setup
 Para configurar y ejecutar cada proyecto referirse a sus respectivos README:
