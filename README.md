@@ -24,3 +24,4 @@ Por requerimiento se trabajo en una arquitectura con un servicio y un gateway do
 * Dockerizar `gateway` y `service` para que sea mas comodo la ejecucion.
 * Añadir pruebas unitarias y de integracion.
 * Firmar el token que devuelve el endpoint de `users/make-purchase`
+* Agregar `ResponseDtos` para poder agregar swagger como documentacion para las apis
