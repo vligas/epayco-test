@@ -10,7 +10,6 @@ envLoad.config({
 export const {
     env,
     port,
-    db,
     logs,
     serviceUrl,
     apiSecretKey
@@ -18,13 +17,6 @@ export const {
     env: process.env.NODE_ENV,
     port: process.env.APP_PORT,
     serviceUrl: process.env.SERVICE_URL,
-    db: {
-        name: process.env.DB_NAME,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASSWORD,
-        host: process.env.DB_HOST,
-        port: process.env.DB_PORT,
-    },
     apiSecretKey: process.env.API_SECRET_KEY,
     logs: process.env.NODE_ENV === 'production' ? 'combined' : 'dev',
 };

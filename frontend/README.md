@@ -6,6 +6,7 @@ In the project directory, you can run:
 
 ### `npm start`
 
+Before starting the app you need to duplicate and change `config.js.example` to `config.js` and rewrite the api url with yours.<br />
 Runs the app in the development mode.<br />
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
