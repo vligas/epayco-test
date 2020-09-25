@@ -13,7 +13,7 @@ export const CardPage = (props) => {
 };
 
 CardPage.propTypes = {
-  title: PropTypes.oneOf([PropTypes.string, PropTypes.node]),
+  title: PropTypes.string,
 };
 
 export const CardPageTitle = styled.h2`
@@ -30,5 +30,4 @@ export const FooterText = styled.p`
 const CardPageContainer = styled(Paper)`
   width: 250px;
   padding: 25px 20px;
-  /* margin-top: 100px 0px; */
 `;

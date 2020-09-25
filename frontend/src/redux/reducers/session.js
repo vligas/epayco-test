@@ -3,14 +3,16 @@
  * and the login info one doesn't have a structure that make sense to handle session store
  */
 import produce from 'immer';
+import { storage } from '../../utils/storage';
 
 const scope = '[Session]';
 
 export const SET_USER = `${scope} SET USER`;
 export const UNSET_USER = `${scope} UNSET USER`;
 
+console.log(storage.get('user'));
 const defaultState = {
-  user: null,
+  user: storage.get('user'),
 };
 
 const sessionReducer = (state = defaultState, action) =>
@@ -30,6 +32,7 @@ const sessionReducer = (state = defaultState, action) =>
   });
 
 export const setUser = (user) => {
+  storage.set('user', user);
   return {
     type: SET_USER,
     payload: user,
